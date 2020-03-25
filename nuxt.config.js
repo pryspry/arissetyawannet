@@ -1,5 +1,17 @@
 
 export default {
+  generate: {
+    routes: function() {
+      const fs = require('fs');
+      const path = require('path');
+      return fs.readdirSync('./assets/content/blog').map(file => {
+        return {
+          route: `/blog/${path.parse(file).name}`, // Return the slug
+          payload: require(`./assets/content/blog/${file}`),
+        };
+      });
+    },
+  },
   mode: 'universal',
   /*
   ** Headers of the page
@@ -41,7 +53,11 @@ export default {
     // Doc: https://github.com/nuxt-community/modules/tree/master/packages/bulma
     '@nuxtjs/bulma',
     '@nuxtjs/pwa',
+    '@nuxtjs/markdownit'
   ],
+  markdownit: {
+    injected: true,
+  },
   /*
   ** Build configuration
   */
@@ -56,7 +72,10 @@ export default {
     /*
     ** You can extend webpack config here
     */
+   
     extend (config, ctx) {
+      
     }
-  }
+  },
+  
 }
